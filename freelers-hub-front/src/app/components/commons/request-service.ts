@@ -1,5 +1,6 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpContext, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Injectable({providedIn:'root'})
 
@@ -11,6 +12,17 @@ export class RequestService {
             email: inputEmail,
             password: inputPassword
         }
-        return this.httpClient.post('https://localhost:5000/v1/auth/log-in', body)
+        return this.httpClient.post('https://localhost:5001/v1/auth/log-in', body)
+    }
+
+    public AuthenticateToken(token: string) {
+
+        const requestHeaders = {
+            Authorization: `Bearer ${token}`
+        }
+
+        return this.httpClient.get<boolean>("https://localhost:5001/v1/auth", {
+            headers: requestHeaders
+        })
     }
 }
